@@ -219,10 +219,11 @@ def try_use_tgcrypto_module():
                 self.iv = iv
 
             def encrypt(self, data):
-                return tgcrypto.ctr256_encrypt(data, self.key, self.iv, bytes(1))
+                return (tgcrypto.ctr256_encrypt(data, self.key, str.encode(str(self.iv)), bytes(1)))
 
             def decrypt(self, data):
-                return tgcrypto.ctr256_decrypt(data, self.key, self.iv, bytes(1))
+                print(type(data), type(self.key), (str.encode(str(self.iv))), type(bytes(1)))
+                return (tgcrypto.ctr256_decrypt(data, self.key, str.encode(str(self.iv)), bytes(1)))
 
         iv_bytes = int.to_bytes(iv, 16, "big")
         return EncryptorAdapter(key, iv)
@@ -237,7 +238,7 @@ def try_use_tgcrypto_module():
                 return tgcrypto.cbc256_encrypt(data, self.key, self.iv)
 
             def decrypt(self, data):
-                return tgcrypto.cbc256_decrypt(data, self.key, self.iv))
+                return tgcrypto.cbc256_decrypt(data, self.key, self.iv)
 
         iv_bytes = int.to_bytes(iv, 16, "big")
         return EncryptorAdapter(key, iv)
